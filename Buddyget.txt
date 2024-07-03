@@ -1,0 +1,3 @@
+username:ndahinyukalewis
+password:erQH3pKLEIQE5BRN
+connection String:mongodb+srv://ndahinyukalewis:erQH3pKLEIQE5BRN@buddyget.ktlkyi0.mongodb.net/?retryWrites=true&w=majority&appName=BuddyGet
