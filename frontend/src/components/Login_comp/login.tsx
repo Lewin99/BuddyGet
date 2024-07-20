@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import { Form, Button, Container, InputGroup } from "react-bootstrap";
 import { Email, Lock } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
+import useAuth from "../Hooks/useAuth";
 
 // Custom styled components
 const CenteredContainer = styled(Container)`
   height: 100vh;
+  min-width: 100%;
   background: #181a1e;
   display: flex;
   justify-content: center;
@@ -59,22 +63,56 @@ const StyledFormGroup = styled(Form.Group)`
 `;
 
 const LoginForm: React.FC = () => {
+  const { setAuth } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loginError, setLoginError] = useState(null);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const navigate = useNavigate();
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Handle login logic here (e.g., send data to backend)
-    console.log("Email:", email);
-    console.log("Password:", password);
-    // Reset the form after submission (optional)
-    setEmail("");
-    setPassword("");
+
+    try {
+      const response = await fetch("http://localhost:5000/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const responseData = await response.json();
+
+      if (response.ok) {
+        const { Access_token, expiresIn, bankAccountConnected } = responseData;
+        const authData = {
+          accessToken: Access_token,
+          expiresIn,
+        };
+
+        setAuth(authData);
+        window.localStorage.setItem("auth", JSON.stringify(authData));
+
+        if (bankAccountConnected) {
+          navigate("/dashboard");
+        } else {
+          navigate("/connectToAccount");
+        }
+
+        setEmail("");
+        setPassword("");
+      } else {
+        console.log("Login failed:", responseData.error);
+        setLoginError(responseData.error);
+      }
+    } catch (error) {
+      console.error("An error occurred during the fetch:", error);
+    }
   };
 
   return (
     <CenteredContainer>
-      <StyledForm onSubmit={handleSubmit}>
+      <StyledForm>
         <LogoContainer>
           <Logo
             src="https://i.ibb.co/v30tzD8/pngaaa-com-4457319.png"
@@ -113,7 +151,14 @@ const LoginForm: React.FC = () => {
           </InputGroup>
         </StyledFormGroup>
 
-        <CustomButton type="submit">Login</CustomButton>
+        <CustomButton type="submit" onClick={handleSubmit}>
+          Login
+        </CustomButton>
+        <div className="pt-2 ">
+          <Link to="register" className="nav-link text-secondary mt-2">
+            New here?Click to signup.
+          </Link>
+        </div>
       </StyledForm>
     </CenteredContainer>
   );

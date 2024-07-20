@@ -6,7 +6,9 @@ import bodyParser from "body-parser";
 import usersrouter from "../routes/Userroutes.mjs";
 import plaidrouters from "../routes/Plaidroutes.mjs";
 import Budgetrouters from "../routes/BudgetRoutes.mjs";
-import cors from 'cors';
+import cors from "cors";
+import Transactionrouters from "../routes/TransactionRoutes.mjs";
+import Goalrouter from "../routes/GoalsRoutes.mjs";
 
 dotenv.config();
 
@@ -28,7 +30,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(cookieParser()); 
+app.use(cookieParser());
 
 const PORT = process.env.PORT || 5500;
 
@@ -39,9 +41,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
   res.send("Hello, world!");
 });
-app.use("/", usersrouter);
+app.use("/users", usersrouter);
 app.use("/", plaidrouters);
-app.use("/", Budgetrouters);
+app.use("/Budget", Budgetrouters);
+app.use("/Transactions", Transactionrouters);
+app.use("/Goals", Goalrouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

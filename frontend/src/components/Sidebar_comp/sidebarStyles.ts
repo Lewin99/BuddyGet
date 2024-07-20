@@ -1,9 +1,14 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 export const StyledSidebarWrapper = styled.div`
-  height: 100vh;
+  width: 17%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
   background-color: ${(props) => props.theme.background};
-  color: ${(props) => props.theme.color};
+  color: ${(props) => props.theme.textcolor};
   font-weight: medium;
 `;
 
@@ -43,10 +48,8 @@ export const StyledLinkItem = styled.div`
 
   &:hover {
     cursor: pointer;
-    margin-left: 0.8rem;
+    background-color: #f0f0f2; // subtle background on hover for better UX
   }
-
-  transition: margin-left 0.5s ease;
 `;
 
 export const StyledLinkLogoutItem = styled(StyledLinkItem)`
@@ -55,6 +58,15 @@ export const StyledLinkLogoutItem = styled(StyledLinkItem)`
   width: 100%;
 `;
 
-export const StyledLinkTitle = styled.span`
-  margin-left: 10px;
+export const StyledLink = styled(Link)`
+  text-decoration: none; // Removes underline
+  color: inherit; // Inherits color from StyledLinkItem
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  &:hover {
+    text-decoration: none; // Ensure no underline on hover
+    color: #5c5c8a; // Adjust the hover color
+  }
 `;

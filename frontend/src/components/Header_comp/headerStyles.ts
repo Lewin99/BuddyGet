@@ -40,6 +40,7 @@ export const Profile = styled.div`
 
 export const Info = styled.div`
   margin-right: 10px;
+  margin-top: 0.9rem;
   color: ${(props) => props.theme.color};
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 0.8rem;

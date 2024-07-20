@@ -16,6 +16,11 @@ const itemSchema = new Schema({
 
 // Define the schema for budgets
 const budgetSchema = new Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
   name: {
     type: String,
     required: [true, "Budget name is required"],
@@ -27,6 +32,10 @@ const budgetSchema = new Schema({
   endDate: {
     type: Date,
     required: [true, "End date is required"],
+  },
+  description: {
+    type: String,
+    required: [true, "Description is required"],
   },
   actualSpending: {
     type: Number,

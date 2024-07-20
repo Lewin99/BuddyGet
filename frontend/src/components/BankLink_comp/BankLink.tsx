@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import useAuth from "../Hooks/useAuth";
 import {
   PlaidLink,
   PlaidLinkOnSuccessMetadata,
@@ -8,6 +10,7 @@ import styled from "styled-components";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const Container = styled.div`
+  background-color: #181a1e;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -46,6 +49,8 @@ const Button = styled.button`
 
 const BankLinkComponent: React.FC = () => {
   const [linkToken, setLinkToken] = useState<string | null>(null);
+  const { auth } = useAuth();
+  const navigate = useNavigate();
 
   const fetchLinkToken = async () => {
     try {
@@ -53,6 +58,7 @@ const BankLinkComponent: React.FC = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${auth.accessToken}`,
         },
       });
       const data = await response.json();
@@ -66,25 +72,53 @@ const BankLinkComponent: React.FC = () => {
     fetchLinkToken();
   }, []);
 
-  const handleOnSuccess = (
+  const handleOnSuccess = async (
     publicToken: string,
     metadata: PlaidLinkOnSuccessMetadata
   ) => {
-    console.log("Public Token:", publicToken);
-    console.log("Metadata:", metadata);
-    fetch("http://localhost:5000/ExchangePublicToken", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ public_token: publicToken }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Access Token:", data.access_token);
-        // Store access token for future use
-      })
-      .catch((error) => console.error("Error exchanging public token:", error));
+    try {
+      console.log("Public Token:", publicToken);
+      console.log("Metadata:", metadata);
+
+      const exchangeResponse = await fetch(
+        "http://localhost:5000/ExchangePublicToken",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${auth.accessToken}`,
+          },
+          body: JSON.stringify({
+            public_token: publicToken,
+            meta_data: metadata,
+          }),
+        }
+      );
+      const exchangeData = await exchangeResponse.json();
+      const accessToken = exchangeData.access_token;
+
+      console.log("Access Token:", accessToken);
+
+      // Fetch transactions using the access token
+      const transactionsResponse = await fetch(
+        "http://localhost:5000/Transactions/FetchandSaveTransactions",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${auth.accessToken}`,
+          },
+          body: JSON.stringify({ access_token: accessToken }),
+        }
+      );
+      const transactionsData = await transactionsResponse.json();
+
+      // Display transactions in console
+      console.log("Transactions Data:", transactionsData);
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Error in handling onSuccess:", error);
+    }
   };
 
   const plaidLinkConfig: PlaidLinkOptionsWithLinkToken = {

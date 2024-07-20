@@ -21,7 +21,7 @@ const MainContent = styled.div`
   width: 80%; // Set main content area width to 80%
 `;
 
-function Dash() {
+function App() {
   const { mode } = useTheme();
 
   useEffect(() => {
@@ -47,4 +47,4 @@ function Dash() {
   );
 }
 
-export default Dash;
+export default App;

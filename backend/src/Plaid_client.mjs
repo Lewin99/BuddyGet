@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-// Initialize Plaid client using environment variables
 const configuration = new Configuration({
   basePath: PlaidEnvironments.sandbox,
   baseOptions: {

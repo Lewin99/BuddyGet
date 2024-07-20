@@ -1,4 +1,3 @@
-import React from "react";
 import {
   StyledSidebarWrapper,
   StyledLogoWrapper,
@@ -7,7 +6,7 @@ import {
   StyledLinksWrapper,
   StyledLinkItem,
   StyledLinkLogoutItem,
-  StyledLinkTitle,
+  StyledLink,
 } from "./sidebarStyles";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
@@ -15,11 +14,11 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import SettingsIcon from "@mui/icons-material/Settings";
-import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useTheme } from "../contexts/ThemeContext";
 
-const Sidebar: React.FC = () => {
+const Sidebar = () => {
   const { mode } = useTheme();
   return (
     <StyledSidebarWrapper
@@ -37,36 +36,52 @@ const Sidebar: React.FC = () => {
       </StyledLogoWrapper>
       <StyledLinksWrapper>
         <StyledLinkItem>
-          <DashboardIcon />
-          <StyledLinkTitle>Dashboard</StyledLinkTitle>
+          <StyledLink to="/dashboard">
+            <DashboardIcon />
+            Dashboard
+          </StyledLink>
         </StyledLinkItem>
         <StyledLinkItem>
-          <MonetizationOnOutlinedIcon />
-          <StyledLinkTitle>Budget</StyledLinkTitle>
+          <StyledLink to="/budget">
+            <MonetizationOnOutlinedIcon />
+            Budget
+          </StyledLink>
         </StyledLinkItem>
         <StyledLinkItem>
-          <ShoppingCartOutlinedIcon />
-          <StyledLinkTitle>Transactions</StyledLinkTitle>
+          <StyledLink to="/Transactions">
+            <ShoppingCartOutlinedIcon />
+            Transactions
+          </StyledLink>
         </StyledLinkItem>
         <StyledLinkItem>
-          <TimelineOutlinedIcon />
-          <StyledLinkTitle>Financial Goals</StyledLinkTitle>
+          <StyledLink to="/GoalsListComponent">
+            <TimelineOutlinedIcon />
+            Financial Goals
+          </StyledLink>
         </StyledLinkItem>
         <StyledLinkItem>
-          <ReceiptOutlinedIcon />
-          <StyledLinkTitle>Bills Management</StyledLinkTitle>
+          <StyledLink to="/bills">
+            <AccountCircleIcon />
+            Insights
+          </StyledLink>
         </StyledLinkItem>
         <StyledLinkItem>
-          <NotificationsIcon />
-          <StyledLinkTitle>Notifications</StyledLinkTitle>
+          <StyledLink to="/notifications">
+            <NotificationsIcon />
+            Notifications
+          </StyledLink>
         </StyledLinkItem>
         <StyledLinkItem>
-          <SettingsIcon />
-          <StyledLinkTitle>Settings</StyledLinkTitle>
+          <StyledLink to="/settings">
+            <SettingsIcon />
+            Settings
+          </StyledLink>
         </StyledLinkItem>
         <StyledLinkLogoutItem>
-          <LogoutIcon />
-          <StyledLinkTitle>Logout</StyledLinkTitle>
+          <StyledLink to="/logout">
+            <LogoutIcon />
+            Logout
+          </StyledLink>
         </StyledLinkLogoutItem>
       </StyledLinksWrapper>
     </StyledSidebarWrapper>
